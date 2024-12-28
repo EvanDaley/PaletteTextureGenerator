@@ -3,82 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradient Controller</title>
+    <title>Color Palette</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        .color-container {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        #gradients-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 0; /* Remove spacing between gradients */
-            width: 512px;
-            height: 512px;
-        }
-
-        .gradient-box {
-            display: block;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(50, 50, 50, 0.5), transparent 50%, white);
-        }
-
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
+            height: 100%;
+        }
+        .color {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 2px black;
+        }
+        .color:nth-child(odd) {
+            color: black;
+            text-shadow: 1px 1px 2px white;
+        }
+        input {
+            margin-top: 10px;
         }
     </style>
-
 </head>
 <body>
-<h1>Gradient Controller</h1>
-<div id="gradients-container">
-    <div class="gradient-box" id="gradient-1"></div>
-    <div class="gradient-box" id="gradient-2"></div>
-    <div class="gradient-box" id="gradient-3"></div>
-    <div class="gradient-box" id="gradient-4"></div>
-    <div class="gradient-box" id="gradient-5"></div>
-    <div class="gradient-box" id="gradient-6"></div>
+<div class="color-container">
+    <div id="gradient-1" class="color" style="background-color: #587c57;">#587c57</div>
+    <input id="input-1" type="color" value="#587c57">
 </div>
-<div class="controls">
-    <input type="color" id="input-1" value="#ff0000">
-    <input type="color" id="input-2" value="#00ff00">
-    <input type="color" id="input-3" value="#0000ff">
-    <input type="color" id="input-4" value="#ffff00">
-    <input type="color" id="input-5" value="#ff00ff">
-    <input type="color" id="input-6" value="#00ffff">
+<div class="color-container">
+    <div id="gradient-2" class="color" style="background-color: #332c28;">#332c28</div>
+    <input id="input-2" type="color" value="#332c28">
 </div>
+<div class="color-container">
+    <div id="gradient-3" class="color" style="background-color: #dfc08b;">#dfc08b</div>
+    <input id="input-3" type="color" value="#dfc08b">
+</div>
+</body>
 <script>
-    const gradientsContainer = document.getElementById('gradients-container');
-
     const updateGradient = (input, gradientBox) => {
         const color = input.value;
         gradientBox.style.background = `linear-gradient(to top, black, ${color} 50%, white)`;
+        gradientBox.textContent = color;
     };
 
     const initializeGradients = () => {
-        for (let i = 1; i <= 6; i++) {
+        for (let i = 1; i <= 3; i++) {
             const input = document.getElementById(`input-${i}`);
             const gradientBox = document.getElementById(`gradient-${i}`);
+
+            // Initialize gradient
             updateGradient(input, gradientBox);
 
+            // Attach event listener for input changes
             input.addEventListener('input', () => updateGradient(input, gradientBox));
         }
     };
 
-    // Initialize gradients and attach event listeners
-    initializeGradients();
-
-    // Apply gradients on page load
+    // Initialize gradients on page load
     window.addEventListener('DOMContentLoaded', initializeGradients);
 </script>
-</body>
 </html>
