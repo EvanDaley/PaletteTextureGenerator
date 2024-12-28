@@ -138,7 +138,7 @@
     const addHeader = (toolsDiv, label) => {
         const header = document.createElement('h3');
         header.textContent = label;
-        header.className = "text  text-gray-700";
+        header.className = "text-lg font-bold text-gray-700";
         toolsDiv.appendChild(header);
     }
 
@@ -166,14 +166,21 @@
         toolsDiv.appendChild(addButton);
     }
 
+    const exportImages = () => {
+        console.log("not implemented")
+    }
+
+
 
     const createTools = () => {
         const toolsDiv = createToolsDiv()
-        addHeader(toolsDiv, "Select Colors")
-        createInputsDiv(toolsDiv)
+
         addHeader(toolsDiv, "Tools")
         addToolButton(toolsDiv, "Add Color", addNewColor)
-        addToolButton(toolsDiv, "Export (Not Functional Yet)", addNewColor)
+        addToolButton(toolsDiv, "Export (Not Functional Yet)", exportImages)
+
+        addHeader(toolsDiv, "Select Colors")
+        createInputsDiv(toolsDiv)
     }
 
     window.addEventListener('DOMContentLoaded', () => {
