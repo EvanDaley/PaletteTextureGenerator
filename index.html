@@ -15,7 +15,7 @@
         .inputs {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
+            gap: 0px;
             padding: 10px;
             margin: 0 auto;
         }
@@ -46,9 +46,7 @@
         }
         input {
             width: 100%;
-            padding: 5px;
             border: 1px solid #ddd;
-            border-radius: 4px;
         }
     </style>
 </head>
@@ -108,6 +106,11 @@
     };
 
     const initializeGradients = () => {
+        // Create the content container
+        const contentDiv = document.createElement('div');
+        contentDiv.className = "content";
+        document.body.appendChild(contentDiv);
+
         for (let i = 1; i <= colors.length; i++) {
             initializeInputAndGradient(i);
         }
@@ -128,46 +131,28 @@
         contentDiv.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
     };
 
-    const addHeader = (toolsDiv) => {
+    const addHeader = (toolsDiv, label) => {
         const header = document.createElement('h3');
-        header.textContent = "Tools";
-        header.className = "text-lg font-bold text-gray-700 mb-3";
+        header.textContent = label;
+        header.className = "text-lg font-bold text-gray-700";
         toolsDiv.appendChild(header);
     }
 
-    const addToggleControl = (toolsDiv) => {
-        // Add a toggle for border radius
-        const toggleContainer = document.createElement('div');
-        toggleContainer.className = "mt-1";
-
-        const toggleLabel = document.createElement('label');
-        toggleLabel.textContent = "Enable Border Radius";
-        toggleLabel.className = "text-gray-700 ml-2";
-
-        const toggleCheckbox = document.createElement('input');
-        toggleCheckbox.type = "checkbox";
-        toggleCheckbox.className = "mt-1";
-        toggleCheckbox.checked = true; // Default: border-radius enabled
-        toggleCheckbox.addEventListener('change', (event) => {
-            const containers = document.querySelectorAll('.color-container');
-            containers.forEach(container => {
-                container.style.borderRadius = event.target.checked ? "10px" : "0"; // Toggle border-radius
-            });
-        });
-
-        toggleContainer.appendChild(toggleCheckbox);
-        toggleContainer.appendChild(toggleLabel);
-        toolsDiv.appendChild(toggleContainer);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
+    const createTools = () => {
         // Create a container div for the tools section
         const toolsDiv = document.createElement('div');
         toolsDiv.className = "w-full bg-gray-100 border-b shadow-md p-4";
         document.body.appendChild(toolsDiv);
 
-        // addToggleControl(toolsDiv)
-        addHeader(toolsDiv)
+        addHeader(toolsDiv, "Select Colors")
+
+        // Create a container for the inputs
+        const inputsDiv = document.createElement('div');
+        inputsDiv.className = "inputs w-full";
+        inputsDiv.id = "inputs-container";
+        toolsDiv.appendChild(inputsDiv);
+
+        addHeader(toolsDiv, "Tools")
 
         // Add a button for adding new colors
         const addButton = document.createElement('button');
@@ -177,18 +162,10 @@
             addNewColor();
         });
         toolsDiv.appendChild(addButton);
+    }
 
-        // Create a container for the inputs
-        const inputsDiv = document.createElement('div');
-        inputsDiv.className = "inputs w-full";
-        inputsDiv.id = "inputs-container";
-        document.body.appendChild(inputsDiv);
-
-        // Create the content container
-        const contentDiv = document.createElement('div');
-        contentDiv.className = "content";
-        document.body.appendChild(contentDiv);
-
+    window.addEventListener('DOMContentLoaded', () => {
+        createTools()
         initializeGradients();
     });
 </script>
