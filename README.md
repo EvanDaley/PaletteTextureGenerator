@@ -20,9 +20,6 @@ Getting Started
 ---
 Clone the repository and runnig on your machine, follow the steps below.
 
-### Prerequisites
-- Vue and npm installed on your machine
-
 ### Setup
 ```
 npm install
