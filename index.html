@@ -58,6 +58,10 @@
     const updateGradient = (color, gradientBox) => {
         const adjustColor = (color, amount) => {
             const usePound = color[0] === "#";
+            if (!color || !/^#([0-9A-F]{3}){1,2}$/i.test(color)) {
+                color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0').toUpperCase()}`;
+            }
+
             const num = parseInt(color.slice(1), 16);
 
             let r = (num >> 16) + amount;
@@ -134,34 +138,42 @@
     const addHeader = (toolsDiv, label) => {
         const header = document.createElement('h3');
         header.textContent = label;
-        header.className = "text-lg font-bold text-gray-700";
+        header.className = "text  text-gray-700";
         toolsDiv.appendChild(header);
     }
 
-    const createTools = () => {
-        // Create a container div for the tools section
-        const toolsDiv = document.createElement('div');
-        toolsDiv.className = "w-full bg-gray-100 border-b shadow-md p-4";
-        document.body.appendChild(toolsDiv);
-
-        addHeader(toolsDiv, "Select Colors")
-
-        // Create a container for the inputs
+    const createInputsDiv = (toolsDiv) => {
         const inputsDiv = document.createElement('div');
         inputsDiv.className = "inputs w-full";
         inputsDiv.id = "inputs-container";
         toolsDiv.appendChild(inputsDiv);
+    }
 
-        addHeader(toolsDiv, "Tools")
+    const createToolsDiv = () => {
+        const toolsDiv = document.createElement('div');
+        toolsDiv.className = "w-full bg-gray-100 border-b shadow-md p-4";
+        document.body.appendChild(toolsDiv);
 
-        // Add a button for adding new colors
+        return toolsDiv
+    }
+
+
+    const addToolButton = (toolsDiv, label, execFunction) => {
         const addButton = document.createElement('button');
-        addButton.textContent = "Add Color";
-        addButton.className = "w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded";
-        addButton.addEventListener('click', () => {
-            addNewColor();
-        });
+        addButton.textContent = label;
+        addButton.className = "bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded mx-1";
+        addButton.addEventListener('click', execFunction);
         toolsDiv.appendChild(addButton);
+    }
+
+
+    const createTools = () => {
+        const toolsDiv = createToolsDiv()
+        addHeader(toolsDiv, "Select Colors")
+        createInputsDiv(toolsDiv)
+        addHeader(toolsDiv, "Tools")
+        addToolButton(toolsDiv, "Add Color", addNewColor)
+        addToolButton(toolsDiv, "Export (Not Functional Yet)", addNewColor)
     }
 
     window.addEventListener('DOMContentLoaded', () => {
