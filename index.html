@@ -9,24 +9,26 @@
         body {
             margin: 0;
             display: flex;
-            flex-direction: column; /* Make the body a column layout */
+            flex-direction: column;
             height: 100vh;
         }
         .content {
-            display: flex;
-            flex-wrap: wrap;
-            flex: 1; /* Take remaining space */
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust column count dynamically */
+            gap: 0; /* Remove margins between items */
+            padding: 0; /* Remove padding */
+            flex: 1;
         }
         .color-container {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            border: 1px solid #ddd;
+            border-radius: 0; /* Remove rounding to make edges flush */
+            overflow: hidden;
         }
+
         .color {
             flex: 1;
             width: 100%;
@@ -43,14 +45,14 @@
             text-shadow: 1px 1px 2px white;
         }
         input {
-            margin-top: 10px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
 </body>
 <script>
-    let colors = ["#587c57", "#332c28", "#dfc08b"];
+    let colors = ["#587c57", "#332c28", "#dfc08b", "#1e90ff", "#ff6347", "#6a5acd"]; // Start with 6 colors
 
     const updateGradient = (color, gradientBox) => {
         const adjustColor = (color, amount) => {
@@ -72,6 +74,15 @@
         const darkerColor = adjustColor(color, -80);
 
         gradientBox.style.background = `linear-gradient(to top, ${darkerColor}, ${color} 50%, ${lighterColor})`;
+    };
+
+    const adjustGridLayout = () => {
+        const contentDiv = document.querySelector('.content');
+        const totalColors = colors.length;
+        const columns = Math.ceil(Math.sqrt(totalColors)); // Number of columns
+        const rows = Math.ceil(totalColors / columns); // Number of rows
+
+        contentDiv.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
     };
 
     const initializeInputAndGradient = (index) => {
@@ -106,23 +117,28 @@
         for (let i = 1; i <= colors.length; i++) {
             initializeInputAndGradient(i);
         }
+        adjustGridLayout(); // Ensure grid adjusts to the initial number of colors
     };
 
     const addNewColor = (color = "#ffffff") => {
         colors.push(color); // Add new color to the array
         const index = colors.length; // New index
         initializeInputAndGradient(index); // Initialize new input and gradient
+        adjustGridLayout(); // Adjust the grid layout
     };
+
 
     window.addEventListener('DOMContentLoaded', () => {
         // Create a container div for the tools section
         const toolsDiv = document.createElement('div');
-        toolsDiv.className = "mx-auto p-4 bg-gray-100 border-b rounded-b shadow-md w-full";
+        toolsDiv.className = "w-full bg-gray-100 border-b shadow-md mb-2"; // Remove padding and rounded edges
+
+        // toolsDiv.className = "mx-auto p-4 bg-gray-100 border-b rounded-b shadow-md w-full";
         toolsDiv.style.maxWidth = "800px";
 
         // Add a header
         const header = document.createElement('h3');
-        header.textContent = "Tools";
+        header.textContent = "Actions";
         header.className = "text-lg font-bold text-gray-700 mb-3";
         toolsDiv.appendChild(header);
 
