@@ -43,23 +43,44 @@
 </head>
 <body>
 <div class="color-container">
-    <div id="gradient-1" class="color" style="background-color: #587c57;">#587c57</div>
-    <input id="input-1" type="color" value="#587c57">
+    <div id="gradient-1" class="color" style="background-color: #587c57;"></div>
 </div>
 <div class="color-container">
-    <div id="gradient-2" class="color" style="background-color: #332c28;">#332c28</div>
-    <input id="input-2" type="color" value="#332c28">
+    <div id="gradient-2" class="color" style="background-color: #332c28;"></div>
 </div>
 <div class="color-container">
-    <div id="gradient-3" class="color" style="background-color: #dfc08b;">#dfc08b</div>
-    <input id="input-3" type="color" value="#dfc08b">
+    <div id="gradient-3" class="color" style="background-color: #dfc08b;"></div>
 </div>
+<input id="input-1" type="color" value="#587c57">
+<input id="input-2" type="color" value="#332c28">
+<input id="input-3" type="color" value="#dfc08b">
+
 </body>
 <script>
     const updateGradient = (input, gradientBox) => {
         const color = input.value;
-        gradientBox.style.background = `linear-gradient(to top, black, ${color} 50%, white)`;
-        gradientBox.textContent = color;
+
+        // Function to lighten or darken a color
+        const adjustColor = (color, amount) => {
+            const usePound = color[0] === "#";
+            const num = parseInt(color.slice(1), 16);
+
+            let r = (num >> 16) + amount;
+            let g = ((num >> 8) & 0x00ff) + amount;
+            let b = (num & 0x0000ff) + amount;
+
+            r = Math.max(Math.min(255, r), 0);
+            g = Math.max(Math.min(255, g), 0);
+            b = Math.max(Math.min(255, b), 0);
+
+            return (usePound ? "#" : "") + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        };
+
+        const lighterColor = adjustColor(color, 40); // Slightly lighten
+        const darkerColor = adjustColor(color, -80); // Slightly darken
+
+        gradientBox.style.background = `linear-gradient(to top, ${darkerColor}, ${color} 50%, ${lighterColor})`;
+        // gradientBox.textContent = color;
     };
 
     const initializeGradients = () => {
